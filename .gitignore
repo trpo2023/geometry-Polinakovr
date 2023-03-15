@@ -1,8 +1,5 @@
 main
-*.[oa]
+*.o
 *~
-*swp
-bin/
-*.txt
-! input.txt
+1main.c
 
