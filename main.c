@@ -1,168 +1,35 @@
-#include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-int check_num(char figure[], int* p)
-{
-    int k = *p;
+struct Point {
+	float x;
+	float y;
+};
 
-    char str2[13] = "-.0123456789";
+struct WKTcircle {
+	struct Point point;
+	float number;
+};
 
-    while (figure[k] == ' ') {
-        k++;
-    }
-
-    if (figure[k] == '0') {
-        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL) {
-            printf("Error at column %d: expected '.' \n", k);
-            return 0;
-        }
-    }
-
-    if (strchr(str2, figure[k]) == NULL) {
-        printf("Error at column %d: unexpected character\n", k);
-        return 0;
-    }
-
-    while (strchr(str2, figure[k]) != NULL) {
-        k++;
-    }
-
-    if (figure[k] == ',' || figure[k] == ')') {
-        printf("Error at column %d: expected number\n", k);
-        return 0;
-    }
-
-    if (figure[k] != ' ') {
-        printf("Error at column %d: expected ' '\n", k);
-        return 0;
-    }
-
-    while (figure[k] == ' ') {
-        k++;
-    }
-
-    if (figure[k] == '0') {
-        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL) {
-            printf("Error at column %d: expected '.'\n", k);
-            return 0;
-        }
-    }
-
-    if (strchr(str2, figure[k]) == NULL) {
-        printf("Error at column %d: unexpected character\n", k);
-        return 0;
-    }
-
-    while (strchr(str2, figure[k]) != NULL) {
-        k++;
-    }
-
-    while (figure[k] == ' ') {
-        k++;
-    }
-
-    k++;
-    *p = k;
-    return 1;
-}
-
-void circle(char figure[])
-{
-    char str[6] = "circle";
-    char str2[13] = "-.0123456789";
-
-    for (int i = 0; i < 5; i++) {
-        figure[i] = tolower(figure[i]);
-        if (figure[i] != str[i]) {
-            char strerr[6];
-            strncpy(strerr, figure, 6);
-            strerr[6] = '\0';
-            printf("Error at column 0: expected 'circle' instead of %s\n",
-                   strerr);
-            return;
-        }
-    }
-
-    int k = 7;
-
-    if (figure[6] != '(') {
-        printf("Error at column %d: expected '('\n", k);
-        return;
-    }
-
-    if (check_num(figure, &k) == 0) {
-        return;
-    }
-
-    if (figure[k - 1] != ',') {
-        printf("Error at column %d: expected ','\n", k);
-    }
-
-    while (figure[k] == ' ') {
-        k++;
-    }
-
-    if (figure[k] == '0') {
-        if (figure[k + 1] != '.' && strchr(str2, figure[k + 1]) != NULL) {
-            printf("Error at column %d: expected '.'\n", k);
-            return;
-        }
-    }
-
-    if (strchr(str2, figure[k]) == NULL) {
-        printf("Error at column %d: unexpected character\n", k);
-        return;
-    }
-
-    while (strchr(str2, figure[k]) != NULL) {
-        k++;
-    }
-
-    if (figure[k] != ')') {
-        printf("Error at column %d: expected ')'\n", k);
-    } else {
-        printf("succeed\n");
-    }
-}
-
-int main()
-{
-    char figure1[64];
-    int n;
-
-    printf("enter the number of shapes:");
-    scanf("%d\n", &n);
-    if (n == 0 || n < 0) {
-        printf("stop!!! you entered 0 or <0!!!");
-    } else {
-        while (n > 0) {
-            fgets(figure1, 64, stdin);
-            figure1[0] = tolower(figure1[0]);
-            switch (figure1[0]) {
-            case 'c':
-                circle(figure1);
-                break;
-            default:
-                printf("Error at column 0: expected 'Circle'");
-            }
-            n--;
-        }
-    }
-
-    /*while(n>0)
-    {
-    fgets(figure1, 64, stdin);
-    figure1[0] = tolower(figure1[0]);
-        switch (figure1[0])
-        {
-        case 'c':
-            circle(figure1);
-         break;
-        default:
-            printf("Error at column 0: expected 'Circle'");
-    }
-    n--;
-    }*/
-    return 0;
+int main() {
+	FILE *myfile;
+	myfile = fopen("values.txt", "r");
+	if (!myfile) {puts ("Файл не обнаружен. Работа невозможна."); return 0;}
+	char *type;
+	char line[100];
+	char line1[100];
+	struct WKTcircle c1;
+	while ((fgets(line, 100, myfile)) != 0) {
+		strcpy(line1, line);
+    		type = strtok(line1, "(");
+    		if (strcmp(type, "circle") == 0) {
+      			if ((sscanf(line, "circle(%f %f, %f)", &c1.point.x, &c1.point.y, &c1.number)) == 3)
+        			printf("circle(%f %f, %f) \n", c1.point.x, c1.point.y, c1.number);
+      			else
+        			printf("incorrect data of points of circle. Expected NUM NUM, NUM \n");
+    		} else
+            		printf("Incorrect type of figure format. Expected: \"Circle\" \n");
+  		}
+  return 0;
 }
