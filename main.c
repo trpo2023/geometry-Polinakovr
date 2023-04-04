@@ -14,13 +14,13 @@ int checking(char circle1[], int* p)
 
     if (circle1[z] == '0') {
         if (circle1[z + 1] != '.') {
-            printf("Error \n", z);
+            printf("Error \n");
             return 0;
         }
     }
 
     if (strchr(str2, circle1[z]) == NULL) {
-        printf("Error \n", z);
+        printf("Error \n");
         return 0;
     }
 
@@ -29,7 +29,7 @@ int checking(char circle1[], int* p)
     }
 
     if (circle1[z] != ' ') {
-        printf("Error \n", z);
+        printf("Error \n");
         return 0;
     }
 
@@ -39,13 +39,13 @@ int checking(char circle1[], int* p)
 
     if (circle1[z] == '0') {
         if (circle1[z + 1] != '.' && strchr(str2, circle1[z + 1]) != NULL) {
-            printf("Error \n", z);
+            printf("Error \n");
             return 0;
         }
     }
 
     if (strchr(str2, circle1[z]) == NULL) {
-        printf("Error \n", z);
+        printf("Error \n");
         return 0;
     }
 
@@ -71,7 +71,7 @@ struct variables {
 
 struct WKT {
 	struct variables point;
-	float number;
+	float radius;
 };
 
 int main() 
@@ -82,7 +82,7 @@ int main()
 	char *type;
 	char draw[100];
 	char draw1[100];
-	int k = 7;
+	int z = 7;
 	struct WKT j;
 	while ((fgets(draw, 100, file)) != 0) 
     {
@@ -90,12 +90,12 @@ int main()
     		type = strtok(draw1, "(");
 			if (checking(draw, &z) == 0) 
             {
-       			return;
+       			return 0;
 			}
     		if (strcmp(type, "circle") == 0) 
             {
-      			if ((sscanf(line, "circle(%f %f, %f)", &j.point.x, &j.point.y, &j.number)) == 3)
-        			printf("circle(%f %f, %f)\n", j.point.x, j.point.y, j.number);
+      			if ((sscanf(draw, "circle(%f %f, %f)", &j.point.x, &j.point.y, &j.radius)) == 3)
+        			printf("circle(%f %f, %f)\n", j.point.x, j.point.y, j.radius);
       			
     		}   
   		}
