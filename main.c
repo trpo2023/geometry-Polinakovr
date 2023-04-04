@@ -14,13 +14,13 @@ int checking(char circle1[], int* p)
 
     if (circle1[z] == '0') {
         if (circle1[z + 1] != '.') {
-            printf("Error \n");
+            printf("Error at column %d: expected '.' \n");
             return 0;
         }
     }
 
     if (strchr(str2, circle1[z]) == NULL) {
-        printf("Error \n");
+        printf("Error at column %d: unexpected character \n");
         return 0;
     }
 
@@ -29,7 +29,7 @@ int checking(char circle1[], int* p)
     }
 
     if (circle1[z] != ' ') {
-        printf("Error \n");
+        printf("Error at column %d: expected number \n");
         return 0;
     }
 
@@ -39,13 +39,13 @@ int checking(char circle1[], int* p)
 
     if (circle1[z] == '0') {
         if (circle1[z + 1] != '.' && strchr(str2, circle1[z + 1]) != NULL) {
-            printf("Error \n");
+            printf("Error at column %d: expected '.' \n");
             return 0;
         }
     }
 
     if (strchr(str2, circle1[z]) == NULL) {
-        printf("Error \n");
+        printf("Error at column %d: unexpected character \n");
         return 0;
     }
 
